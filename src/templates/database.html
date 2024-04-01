@@ -134,6 +134,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script>
+       //fetch or take excel sheet and automatically print
        fetch('KMC_Test_Students.xlsx')
            .then(response => response.arrayBuffer())
            .then(data => {
@@ -141,11 +142,11 @@
                const sheetName = workbook.SheetNames[0];
                const sheet = workbook.Sheets[sheetName];
                const jsonData = XLSX.utils.sheet_to_json(sheet,{header:1});
-
+//removes first row of excel sheet and displays the rest
                displayData(jsonData.slice(1));
            })
            .catch(error => console.error('Error fetching Excel data:', error));
-
+//align data into a table structure 
        function displayData(data) {
            const table = document.getElementById('dataTable');
            table.innerHTML = '';
@@ -156,7 +157,7 @@ const headers = data[1];
                const tr = document.createElement('tr');
                Object.values(row).forEach(cellData => {
                    const td = document.createElement('td');
-
+//makes sure all numbers and letters are printed correctly
                    if (!isNaN(cellData) && Number.isFinite(cellData)) {
                        if (cellData >= 1 && cellData <= 99999999999999) {
 
@@ -176,14 +177,14 @@ const headers = data[1];
            });
        }
 
-
+//fixes time  
 
        function convertNumericToTime(numericTime) {
            const hours = Math.floor(numericTime * 24);
            const minutes = Math.round(((numericTime * 24) % 1) * 60);
            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
        }
-
+//search 
       $('#search').on('keyup', function() {
            var value = $(this).val().toLowerCase();
            $('#dataTable tr').filter(function() {
