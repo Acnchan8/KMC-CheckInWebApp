@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Data</title>
+    <style>
+           button1 {
+
+             position: absolute;
+             text-align: center;
+            top: 135%;
+             left: 35%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+
+        }
+
+        button1:hover{
+        background-color: blue;
+        color: white;
+        }
+            button2{
+             position: absolute;
+             text-align: center;
+            top: 135%;
+             left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+
+            } button2:hover{
+        background-color: blue;
+        color: white;
+        }
+            button3{
+            position: absolute;
+            text-align: center;
+            top: 135%;
+             left: 65%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+
+           } button3:hover{
+        background-color: blue;
+        color: white;
+        }
+
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+         th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ADD8E6;
+            text-align: left;
+        }
+        th {
+            background-color: #ADD8E6;
+        }
+        h1 {
+            text-align: center;
+            font-family: Georgia, sans-serif;
+            font-size: 35px;
+            color: #6699CC;
+        }
+
+        .header th {
+            background-color: lightblue;
+            color: black;
+            padding: 8px;
+            border-bottom: 1px solid #ADD8E6;
+            text-align: left;
+            width: auto;
+
+
+        }
+
+
+        #search {
+    padding: 7px;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+    width: 100%;
+    font-size: 16px;
+    outline: lightblue;
+}
+    </style>
+</head>
+<body>
+   <p style="text-align: center">
+       <img class="lg-object lg-image" alt="" src="https://mma.prnewswire.com/media/783424/Surgical_Affiliates___Kern_Medical_Logo.jpg?p=publish"
+           data-scale="width="50" height="50">
+   </p>
+   <h1>DataBase</h1>
+   <input type="text" id="search" placeholder="Search...">
+<div id="graphHeader">
+<table>
+   <tr class="header">
+       <th>Barcode</th>
+       <th>ID</th>
+       <th>Time In</th>
+       <th>Email</th>
+       <th>Student Class</th>
+       <th>Instructor</th>
+       <th>Name</th>
+       <th>Role</th>
+       <th>Department</th>
+       <th>Institution</th>
+       <th>Service</th>
+       <th>Case Name</th>
+       </tr>
+    </table>
+</div>
+
+
+
+    <button1 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View All Data</button1>
+    <button2 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Daily Data</button2>
+    <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
+   <table id="dataTable" border="1">
+
+   </table>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script>
+       fetch('KMC_Test_Students.xlsx')
+           .then(response => response.arrayBuffer())
+           .then(data => {
+               const workbook = XLSX.read(data, { type: 'array' });
+               const sheetName = workbook.SheetNames[0];
+               const sheet = workbook.Sheets[sheetName];
+               const jsonData = XLSX.utils.sheet_to_json(sheet,{header:1});
+
+               displayData(jsonData.slice(1));
+           })
+           .catch(error => console.error('Error fetching Excel data:', error));
+
+       function displayData(data) {
+           const table = document.getElementById('dataTable');
+           table.innerHTML = '';
+
+const headers = data[1];
+
+           data.forEach(row => {
+               const tr = document.createElement('tr');
+               Object.values(row).forEach(cellData => {
+                   const td = document.createElement('td');
+
+                   if (!isNaN(cellData) && Number.isFinite(cellData)) {
+                       if (cellData >= 1 && cellData <= 99999999999999) {
+
+                           td.textContent = cellData.toString();
+                       } else {
+
+                           const time = convertNumericToTime(cellData);
+                           td.textContent = time;
+                       }
+                   } else {
+
+                       td.textContent = cellData;
+                   }
+                   tr.appendChild(td);
+               });
+               table.appendChild(tr);
+           });
+       }
+
+
+
+       function convertNumericToTime(numericTime) {
+           const hours = Math.floor(numericTime * 24);
+           const minutes = Math.round(((numericTime * 24) % 1) * 60);
+           return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+       }
+
+      $('#search').on('keyup', function() {
+           var value = $(this).val().toLowerCase();
+           $('#dataTable tr').filter(function() {
+               $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+           });
+       });
+
+   </script>
+</body>
+</html>
+
+
