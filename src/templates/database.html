@@ -19,7 +19,7 @@
             width: 175px;
 
         }
-        /* turn blue when clicked or hovered over */
+        /* turns blue when clicked or hovered over */
 
         button1:hover{
         background-color: blue;
@@ -36,7 +36,7 @@
             font-size: 20px;
             height: 35px;
             width: 175px;
-   /* turn blue when clicked or hovered over */
+   /* turns blue when clicked or hovered over */
             } button2:hover{
         background-color: blue;
         color: white;
@@ -53,7 +53,7 @@
             height: 35px;
             width: 175px;
 
-        /* turn blue when clicked or hovered over */
+        /* turns blue when clicked or hovered over */
            } button3:hover{
         background-color: blue;
         color: white;
@@ -136,7 +136,7 @@
 </div>
 
 
-<!-- buttons to navigate to the same page but with different html file that has different excel sheet -->
+<!-- buttons to navigate to the same page but with different html file that has a different excel sheet -->
     <button1 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View All Data</button1>
     <button2 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Daily Data</button2>
     <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
@@ -148,7 +148,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script>
-       //fetch or take excel sheet and automatically print
+       //fetch or take excel sheet and automatically print through json
        fetch('KMC_Test_Students.xlsx')
            .then(response => response.arrayBuffer())
            .then(data => {
@@ -159,24 +159,27 @@
 //removes first row of excel sheet and displays the rest
                displayData(jsonData.slice(1));
            })
-           .catch(error => console.error('Error fetching Excel data:', error));
+           //debugs errors
+           .catch(error => console.error('Error:', error));
 //align data into a table structure 
        function displayData(data) {
            const table = document.getElementById('dataTable');
            table.innerHTML = '';
-
+//makes sures the header shows
 const headers = data[1];
 
            data.forEach(row => {
                const tr = document.createElement('tr');
-               Object.values(row).forEach(cellData => {
+               Object.values(row).forEach(cellData => {  
                    const td = document.createElement('td');
 //makes sure all numbers and letters are printed correctly
                    if (!isNaN(cellData) && Number.isFinite(cellData)) {
+                       
                        if (cellData >= 1 && cellData <= 99999999999999) {
 
                            td.textContent = cellData.toString();
                        } else {
+                           //fixes time 
 
                            const time = convertNumericToTime(cellData);
                            td.textContent = time;
@@ -199,10 +202,13 @@ const headers = data[1];
            const minutes = Math.round(((numericTime * 24) % 1) * 60);
            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
        }
-//search function to search through database 
+//search function to search through database using jquery
       $('#search').on('keyup', function() {
+          //allows to search through lowercase
            var value = $(this).val().toLowerCase();
+          //finds data
            $('#dataTable tr').filter(function() {
+               //displays table while searching 
                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
            });
        });
