@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel Data</title>
+    <title>database</title>
     <style>
+        /* button to navigate into viewing master data (link)  */
            button1 {
 
              position: absolute;
@@ -18,11 +19,13 @@
             width: 175px;
 
         }
+        /* turn blue when clicked or hovered over */
 
         button1:hover{
         background-color: blue;
         color: white;
         }
+        /* button to navigate into daily data (link) */
             button2{
              position: absolute;
              text-align: center;
@@ -33,11 +36,12 @@
             font-size: 20px;
             height: 35px;
             width: 175px;
-
+   /* turn blue when clicked or hovered over */
             } button2:hover{
         background-color: blue;
         color: white;
         }
+        /* button to navigate into student data (link)  */
             button3{
             position: absolute;
             text-align: center;
@@ -49,30 +53,35 @@
             height: 35px;
             width: 175px;
 
+        /* turn blue when clicked or hovered over */
            } button3:hover{
         background-color: blue;
         color: white;
         }
 
-
+            /* start table structure */
         table {
             border-collapse: collapse;
             width: 100%;
         }
+        /* spacing and row alignments (turns rows into a light blue color) */
          th, td {
             padding: 8px;
             border-bottom: 1px solid #ADD8E6;
             text-align: left;
         }
+        /* first row color  */
         th {
             background-color: #ADD8E6;
         }
+        /* adds font, color, and font size to title */
         h1 {
             text-align: center;
             font-family: Georgia, sans-serif;
             font-size: 35px;
             color: #6699CC;
         }
+        /* adds color, spacing, and alignments into headers for the excel sheet */
 
         .header th {
             background-color: lightblue;
@@ -84,7 +93,7 @@
 
 
         }
-
+/* fills in search page */
 
         #search {
     padding: 7px;
@@ -98,11 +107,15 @@
 </head>
 <body>
    <p style="text-align: center">
+       <!-- adds kern medical logo -->
        <img class="lg-object lg-image" alt="" src="https://mma.prnewswire.com/media/783424/Surgical_Affiliates___Kern_Medical_Logo.jpg?p=publish"
            data-scale="width="50" height="50">
    </p>
+    <!-- title  -->
    <h1>DataBase</h1>
+    <!-- imply search -->
    <input type="text" id="search" placeholder="Search...">
+    <!-- add headers  -->
 <div id="graphHeader">
 <table>
    <tr class="header">
@@ -123,13 +136,14 @@
 </div>
 
 
-
+<!-- buttons to navigate to the same page but with different html file that has different excel sheet -->
     <button1 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View All Data</button1>
     <button2 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Daily Data</button2>
     <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
    <table id="dataTable" border="1">
 
    </table>
+    <!-- calls json and jquery data in order to write functions -->
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -168,6 +182,7 @@ const headers = data[1];
                            td.textContent = time;
                        }
                    } else {
+                       //goes through rest of table 
 
                        td.textContent = cellData;
                    }
@@ -177,14 +192,14 @@ const headers = data[1];
            });
        }
 
-//fixes time  
+//fixes time (without it time would be displayed into a long fraction)
 
        function convertNumericToTime(numericTime) {
            const hours = Math.floor(numericTime * 24);
            const minutes = Math.round(((numericTime * 24) % 1) * 60);
            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
        }
-//search 
+//search function to search through database 
       $('#search').on('keyup', function() {
            var value = $(this).val().toLowerCase();
            $('#dataTable tr').filter(function() {
