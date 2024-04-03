@@ -15,9 +15,9 @@ The development of the KMC Classroom Check-In System was made possible by the co
 
 ### Frontend Development Team
 
-- **Roselyn Sierra (GitHub: coffe3bas3)** - Graphic Designer: & Page Developer: Crafted the visual identity of the application through iconography, color schemes, and image selection, contributing to a cohesive and appealing user interface. Also, contributed to developing various pages, including those showcasing graphs and the scanning page, enhancing the app’s visual and functional appeal.
+- **Roselyn Sierra (GitHub: coffe3bas3)** - Graphic Designer & Page Developer: Crafted the visual identity of the application through iconography, color schemes, and image selection, contributing to a cohesive and appealing user interface. Also, contributed to developing various pages, including those showcasing graphs and the scanning page, enhancing the app’s visual and functional appeal.
 - **Jacqueline Mendoza Ortiz (GitHub: JellyAngel03)** - Layout Designer: Engineered user-friendly page layouts, focusing on navigational ease and responsiveness, ensuring a seamless user experience.
-- **Fenoon Alrowhani (GitHub: Fen2206)** - User Interface Designer: Designed interactive elements like buttons and menus, playing a crucial role in crafting a dynamic and engaging user interface. Also, created key pages, including the graph display and QR scanning functionalities, contributing to a cohesive user interaction design.
+- **Fenoon Alrowhani (GitHub: Fen2206)** - User Interface Designer & Page Developer: Designed interactive elements like buttons and menus, playing a crucial role in crafting a dynamic and engaging user interface. Also, created key pages, including the graph display and QR scanning functionalities, contributing to a cohesive user interaction design.
 - **Destiny Mitchell (GitHub: dezzzmaa)** - User Experience Specialist: Analyzed and implemented design strategies to optimize the website, ensuring a satisfying and efficient user experience.
 
 ### Backend Development Team
