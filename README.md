@@ -23,8 +23,8 @@ The development of the KMC Classroom Check-In System was made possible by the co
 ### Backend Development Team
 
 - **Sandra Mata (GitHub: s-mata)** - Database Architect: Led the selection and schema design of the database system, laying the groundwork for robust data storage and retrieval mechanisms. Also, helped implement CRUD features, enhancing the app’s data management capabilities.
-- **Jerica Crowder(GitHub: jericacrowder)** - Data Validation Engineer: Implemented comprehensive validation checks to maintain data integrity, ensuring the reliability of user inputs and system outputs. Also, helped implement CRUD features, enhancing the app’s data management capabilities.
-- **Alonso Cardenas(GitHub: McSwiggle6ty9)** - QR Code Information Retrieval Developer: Developed the functionality for fetching information through QR code scans, integrating a key feature for user identification and data access.
+- **Jerica Crowder (GitHub: jericacrowder)** - Data Validation Engineer: Implemented comprehensive validation checks to maintain data integrity, ensuring the reliability of user inputs and system outputs. Also, helped implement CRUD features, enhancing the app’s data management capabilities.
+- **Alonso Cardenas (GitHub: McSwiggle6ty9)** - QR Code Information Retrieval Developer: Developed the functionality for fetching information through QR code scans, integrating a key feature for user identification and data access.
 
 ### Collaborative Efforts
 
