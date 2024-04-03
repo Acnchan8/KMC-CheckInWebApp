@@ -4,15 +4,33 @@
 The KMC Classroom Check-In System is designed to streamline the student attendance process for courses at Kern Medical Center. Utilizing QR code scanning, the system facilitates a quick and efficient method for students to check into their classes. Attendance data is automatically recorded in Excel sheets, allowing professors to easily access and manage attendance records. The system also supports automatic email distribution, enabling professors to send out daily attendance sheets effortlessly.
 
 ## Project Team
-This project was developed as a collaborative effort by a dedicated team of students of Bakersfield College's Code Society. Team members include:
--
--
--
--
--
--
--
--
+
+The development of the KMC Classroom Check-In System was made possible by the concerted effort of Bakersfield College's Code Society students. This project saw the seamless integration of frontend and backend functionalities, thanks to the diverse skill set of each team member. Leadership was provided by Austin, Harlan, and Valeria, who each spearheaded their respective domains while also contributing significantly to development tasks.
+
+### Leadership and Contributions
+
+- **Austin Chan (GitHub: Acnchan8)** - Team Lead & Class Selection/Listing Function Developer: Guided overall project development while focusing on backend functionalities, specifically class selection and QR code information retrieval, to enhance user interaction.
+- **Harlan Phillips (GitHub: Harlan-Phillips)** - Backend Lead & CRUD Operations Specialist: Managed the backend team, leading the development of CRUD operations in Excel sheets, ensuring efficient data handling.
+- **Valeria Cedillo Sanchez (GitHub: Vahlehria)** - Frontend Lead & Frontend Developer: Directed the frontend team, emphasizing user interface development and integration, ensuring the design's responsiveness and interactivity.
+
+### Frontend Development Team
+
+- **Roselyn Sierra (GitHub: coffe3bas3)** - Graphic Designer: & Page Developer: Crafted the visual identity of the application through iconography, color schemes, and image selection, contributing to a cohesive and appealing user interface. Also, contributed to developing various pages, including those showcasing graphs and the scanning page, enhancing the app’s visual and functional appeal.
+- **Jacqueline Mendoza Ortiz (GitHub: JellyAngel03)** - Layout Designer: Engineered user-friendly page layouts, focusing on navigational ease and responsiveness, ensuring a seamless user experience.
+- **Fenoon Alrowhani (GitHub: Fen2206)** - User Interface Designer: Designed interactive elements like buttons and menus, playing a crucial role in crafting a dynamic and engaging user interface. Also, created key pages, including the graph display and QR scanning functionalities, contributing to a cohesive user interaction design.
+- **Destiny Mitchell (GitHub: dezzzmaa)** - User Experience Specialist: Analyzed and implemented design strategies to optimize the website, ensuring a satisfying and efficient user experience.
+
+### Backend Development Team
+
+- **Sandra Mata (GitHub: s-mata)** - Database Architect: Led the selection and schema design of the database system, laying the groundwork for robust data storage and retrieval mechanisms. Also, helped implement CRUD features, enhancing the app’s data management capabilities.
+- **Jerica Crowder(GitHub: jericacrowder)** - Data Validation Engineer: Implemented comprehensive validation checks to maintain data integrity, ensuring the reliability of user inputs and system outputs. Also, helped implement CRUD features, enhancing the app’s data management capabilities.
+- **Alonso Cardenas(GitHub: McSwiggle6ty9)** - QR Code Information Retrieval Developer: Developed the functionality for fetching information through QR code scans, integrating a key feature for user identification and data access.
+
+### Collaborative Efforts
+
+Throughout the project, team members collaborated across different parts of development to ensure a well-integrated system. From the initial stages of design and layout to the intricate details of backend functionality and user experience enhancement, each member contributed to a unified goal. Their efforts were not confined to their primary roles, as they often crossed over to assist in areas outside their immediate responsibilities, demonstrating the team's versatility and commitment to the project's success.
+
+This project stands as a testament to the skill, dedication, and collaborative spirit of the students from Bakersfield College's Code Society, showcasing their ability to bring a comprehensive digital solution from concept to reality.
 
 ## Features
 - **QR Code Check-In**: Students check into their classes by scanning a QR code upon entry.
