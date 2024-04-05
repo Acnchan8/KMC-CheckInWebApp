@@ -30,7 +30,7 @@ def create_student(df, barcode, id, time_in, date, email, student_class, instruc
         return 
     
     #Create the new student using student class
-    new_student = Student(barcode, id, time_in, email, student_class, instructor, name, role, department, institution, service, caseName)
+    new_student = Student(barcode, id, time_in, date, email, student_class, instructor, name, role, department, institution, service, caseName)
     #Student Dictionary, this is used to append it to each column in the excel sheet.
     student_dict = new_student.__dict__
 
