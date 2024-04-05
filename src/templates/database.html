@@ -115,25 +115,6 @@
    <h1>DataBase</h1>
     <!-- imply search -->
    <input type="text" id="search" placeholder="Search...">
-    <!-- add headers  -->
-<div id="graphHeader">
-<table>
-   <tr class="header">
-       <th>Barcode</th>
-       <th>ID</th>
-       <th>Time In</th>
-       <th>Email</th>
-       <th>Student Class</th>
-       <th>Instructor</th>
-       <th>Name</th>
-       <th>Role</th>
-       <th>Department</th>
-       <th>Institution</th>
-       <th>Service</th>
-       <th>Case Name</th>
-       </tr>
-    </table>
-</div>
 
 
 <!-- buttons to navigate to the same page but with different html file that has a different excel sheet -->
@@ -142,50 +123,65 @@
     <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
    <table id="dataTable" border="1">
 
-   </table>
+
     <!-- calls json and jquery data in order to write functions -->
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script>
        //fetch or take excel sheet and automatically print through json
-       fetch('KMC_Test_Students.xlsx')
-           .then(response => response.arrayBuffer())
-           .then(data => {
-               const workbook = XLSX.read(data, { type: 'array' });
-               const sheetName = workbook.SheetNames[0];
-               const sheet = workbook.Sheets[sheetName];
-               const jsonData = XLSX.utils.sheet_to_json(sheet,{header:1});
-//removes first row of excel sheet and displays the rest
-               displayData(jsonData.slice(1));
-           })
+        let originalData;
+    let headerRow;
+
+    fetch('KMC_Test_Students.xlsx')
+        .then(response => response.arrayBuffer())
+        .then(data => {
+            const workbook = XLSX.read(data, {type: 'array'});
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            //add header row
+            originalData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+            // Store the header row and save
+            headerRow = originalData[0];
+            originalData.shift();
+            //display data
+            displayData(originalData);
+        })
            //debugs errors
            .catch(error => console.error('Error:', error));
-//align data into a table structure 
+
+//align data into a table structure
        function displayData(data) {
            const table = document.getElementById('dataTable');
            table.innerHTML = '';
-//makes sures the header shows
-const headers = data[1];
-
+ // Append the header row to the table to ensure that it shows 
+        const trHeader = document.createElement('tr');
+        headerRow.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            trHeader.appendChild(th);
+        });
+        
+        table.appendChild(trHeader);
+ //displays rows and columns
            data.forEach(row => {
                const tr = document.createElement('tr');
-               Object.values(row).forEach(cellData => {  
+               Object.values(row).forEach(cellData => {
                    const td = document.createElement('td');
 //makes sure all numbers and letters are printed correctly
                    if (!isNaN(cellData) && Number.isFinite(cellData)) {
-                       
+
                        if (cellData >= 1 && cellData <= 99999999999999) {
 
                            td.textContent = cellData.toString();
                        } else {
-                           //fixes time 
+                           //fixes time in (Id)
 
                            const time = convertNumericToTime(cellData);
                            td.textContent = time;
                        }
                    } else {
-                       //goes through rest of table 
+                       //goes through rest of table
 
                        td.textContent = cellData;
                    }
@@ -202,16 +198,18 @@ const headers = data[1];
            const minutes = Math.round(((numericTime * 24) % 1) * 60);
            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
        }
-//search function to search through database using jquery
-      $('#search').on('keyup', function() {
-          //allows to search through lowercase
-           var value = $(this).val().toLowerCase();
-          //finds data
-           $('#dataTable tr').filter(function() {
-               //displays table while searching 
-               $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-           });
-       });
+    //function to allow search through database
+
+    document.getElementById("search").addEventListener("keyup", function () {
+    //accepts lowercase and ignores spaces when searching
+    const search = this.value.toLowerCase().replace(/\s/g, '');
+    //shows data table when searching
+     const newData = originalData.filter(row =>
+        row.some(cell => cell.toString().toLowerCase().replace(/\s/g, '').includes(search))
+    );
+    //displays data
+    displayData(newData);
+});
 
    </script>
 </body>
