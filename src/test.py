@@ -1,6 +1,6 @@
 #Import functions from functions.py
 import pandas as pd
-import functions as fc
+import CRUD_Functions as fc
 
 #Create Main
 def main(): 

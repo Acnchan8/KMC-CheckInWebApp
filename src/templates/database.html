@@ -139,7 +139,7 @@
         let originalData;
     let headerRow;
 
-    fetch('KMC_Test_Students.xlsx')
+    fetch('../tests/KMC_Test_Students.xlsx')
         .then(response => response.arrayBuffer())
         .then(data => {
             const workbook = XLSX.read(data, {type: 'array'});
