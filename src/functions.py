@@ -7,10 +7,11 @@ import smtplib
 
 #create Student Class
 class Student:
-    def __init__(self, barcode, id, time_in, email, student_class, instructor, name, role, department, institution, service, caseName):
+    def __init__(self, barcode, id, time_in, date, email, student_class, instructor, name, role, department, institution, service, caseName):
         self.barcode = barcode
         self.id = id
         self.time_in = time_in
+        self.date = date
         self.email = email
         self.student_class = student_class
         self.instructor = instructor
@@ -22,7 +23,7 @@ class Student:
         self.caseName = caseName
 
 #Create Function (Parameters=Student)
-def create_student(df, barcode, id, time_in, email, student_class, instructor, name, role, department, institution, service, caseName):
+def create_student(df, barcode, id, time_in, date, email, student_class, instructor, name, role, department, institution, service, caseName):
     
     #Check if barcode is just numbers
     if not str(barcode).isdigit():
