@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>database</title>
+    <style>
+        /* button to navigate into viewing master data (link)  */
+           button1 {
+
+             position: absolute;
+             text-align: center;
+            top: 135%;
+             left: 35%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            margin: 4px 2px;
+            border-radius: 8px;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+
+        }
+        /* turns blue when clicked or hovered over */
+
+        button1:hover{
+        background-color: blue;
+        color: white;
+        }
+        /* button to navigate into daily data (link) */
+            button2{
+             position: absolute;
+             text-align: center;
+            top: 135%;
+             left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            margin: 4px 2px;
+            border-radius: 8px;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+   /* turns blue when clicked or hovered over */
+            } button2:hover{
+        background-color: blue;
+        color: white;
+        }
+        /* button to navigate into student data (link)  */
+            button3{
+            position: absolute;
+            text-align: center;
+            top: 135%;
+             left: 65%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            margin: 4px 2px;
+            border-radius: 8px;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+
+        /* turns blue when clicked or hovered over */
+           } button3:hover{
+        background-color: blue;
+        color: white;
+        }
+
+            /* start table structure */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        /* spacing and row alignments (turns rows into a light blue color) */
+         th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ADD8E6;
+            text-align: left;
+        }
+        /* first row color  */
+        th {
+            background-color: #ADD8E6;
+        }
+        /* adds font, color, and font size to title */
+        h1 {
+            text-align: center;
+            font-family: Georgia, sans-serif;
+            font-size: 35px;
+            color: #6699CC;
+        }
+        /* adds color, spacing, and alignments into headers for the excel sheet */
+
+        .header th {
+            background-color: lightblue;
+            color: black;
+            padding: 8px;
+            border-bottom: 1px solid #ADD8E6;
+            text-align: left;
+            width: auto;
+
+
+        }
+/* fills in search page */
+
+        #search {
+    padding: 7px;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+    width: 100%;
+    font-size: 16px;
+    outline: lightblue;
+}
+    </style>
+</head>
+<body>
+   <p style="text-align: center">
+       <!-- adds kern medical logo -->
+       <img class="lg-object lg-image" alt="" src="https://mma.prnewswire.com/media/783424/Surgical_Affiliates___Kern_Medical_Logo.jpg?p=publish"
+           data-scale="width="50" height="50">
+   </p>
+    <!-- title  -->
+   <h1>DataBase</h1>
+    <!-- imply search -->
+   <input type="text" id="search" placeholder="Search...">
+
+
+<!-- buttons to navigate to the same page but with different html file that has a different excel sheet -->
+    <button1 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View All Data</button1>
+    <button2 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Daily Data</button2>
+    <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
+   <table id="dataTable" border="1">
+
+
+    <!-- calls json and jquery data in order to write functions -->
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script>
+       //fetch or take excel sheet and automatically print through json
+        let originalData;
+    let headerRow;
+
+    fetch('KMC_Test_Students.xlsx')
+        .then(response => response.arrayBuffer())
+        .then(data => {
+            const workbook = XLSX.read(data, {type: 'array'});
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            //add header row
+            originalData = XLSX.utils.sheet_to_json(sheet, {header: 1});
+            // Store the header row and save
+            headerRow = originalData[0];
+            originalData.shift();
+            //display data
+            displayData(originalData);
+        })
+           //debugs errors
+           .catch(error => console.error('Error:', error));
+
+//align data into a table structure
+       function displayData(data) {
+           const table = document.getElementById('dataTable');
+           table.innerHTML = '';
+ // Append the header row to the table to ensure that it shows
+        const trHeader = document.createElement('tr');
+        headerRow.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            trHeader.appendChild(th);
+        });
+
+        table.appendChild(trHeader);
+ //displays rows and columns
+           data.forEach(row => {
+               const tr = document.createElement('tr');
+               Object.values(row).forEach(cellData => {
+                   const td = document.createElement('td');
+//makes sure all numbers and letters are printed correctly
+                   if (!isNaN(cellData) && Number.isFinite(cellData)) {
+
+                       if (cellData >= 1 && cellData <= 99999999999999) {
+
+                           td.textContent = cellData.toString();
+                       } else {
+                           //fixes time in (Id)
+
+                           const time = convertNumericToTime(cellData);
+                           td.textContent = time;
+                       }
+                   } else {
+                       //goes through rest of table
+
+                       td.textContent = cellData;
+                   }
+                   tr.appendChild(td);
+               });
+               table.appendChild(tr);
+           });
+       }
+
+//fixes time (without it time would be displayed into a long fraction)
+
+       function convertNumericToTime(numericTime) {
+           const hours = Math.floor(numericTime * 24);
+           const minutes = Math.round(((numericTime * 24) % 1) * 60);
+           return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+       }
+    //function to allow search through database
+
+    document.getElementById("search").addEventListener("keyup", function () {
+    //accepts lowercase and ignores spaces when searching
+    const search = this.value.toLowerCase().replace(/\s/g, '');
+    //shows data table when searching
+     const newData = originalData.filter(row =>
+        row.some(cell => cell.toString().toLowerCase().replace(/\s/g, '').includes(search))
+    );
+    //displays data
+    displayData(newData);
+});
+
+   </script>
+</body>
+</html>
+
+
