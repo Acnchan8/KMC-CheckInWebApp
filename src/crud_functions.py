@@ -111,11 +111,11 @@ def process_student_check_in(df, barcode):
     student_dict = new_student.__dict__
 
     #This creates the new student and appends it to the next available row in the excel file
-    updated_df = student_check_in_df._append(student_dict, ignore_index=True)
+    student_check_in_df = student_check_in_df._append(student_dict, ignore_index=True)
     #Creates a new updated excel
-    updated_df.to_excel("tests\KMC_Master_Checkin.xlsx", index=False)
+    student_check_in_df.to_excel(file_path, index=False)
     #returns the updated dataframe so you can continue making changes
-    return updated_df
+    return student_check_in_df
 
 #Read Function
 #print all names from column 'name'

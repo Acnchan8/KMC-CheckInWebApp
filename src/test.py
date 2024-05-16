@@ -1,27 +1,46 @@
 #Import functions from functions.py
 import pandas as pd
-import CRUD_Functions as fc
+import crud_functions as fc
+import download_send as ds
+import time
 
 #Create Main
 def main(): 
-    file_path = "C:\\Users\\pc\\Downloads\\KMC_Test_Students.xlsx"
+    time_in = time.monotonic()
 
+    print(time_in)
+
+    file_path = "tests\KMC_Student_Database.xlsx"
     df = pd.read_excel(file_path)
+    
+    check_in_df = pd.read_excel("tests\KMC_Master_Checkin.xlsx")
 
-    df = fc.create_student(df, "81598", "81598", "12/25/24 3:00pm", "test@email.edu", "student_class", "instructor", "name", "role", "department", "institution", "service", "caseName")
-    df = fc.create_student(df, "56283", "81598", "12/25/24 3:00pm", "test@email.edu", "student_class", "instructor", "name", "role", "department", "institution", "service", "caseName")
-    df = fc.create_student(df, "749309", "749309", "12/25/24 3:00pm", "test@email.edu", "student_class", "instructor", "name", "role", "department", "institution", "service", "caseName")
+    #Creates a new student
+    #df = fc.create_student_database(df, 156234, 132521, "schar@ucsd.edu", "Astro Medicine 101", "Athena", "Satoshi", "Frontend Developer", "Medical Physics", "University of California, San Diego", "Planet Doctor", "Mars lost a moon")
+    #Updates an existing student's information
+    #df = fc.update_student(df, 734628, instructor="new_instructor")
+    #Deleted an existing student
+    #df = fc.delete_student(df, 156234)
 
-    fc.get_names(df)
-    fc.get_student(df, "749309")
+    #Processes a student check in
+    check_in_df = fc.process_student_check_in(df, 633647)
+    check_in_df = fc.process_student_check_in(df, 421305)
+    check_in_df = fc.process_student_check_in(df, 734628)
+    check_in_df = fc.process_student_check_in(df, 825739)
+    check_in_df = fc.process_student_check_in(df, 168162)
 
-    fc.save_daily_CSV(df)
+    time_in = time.monotonic()
 
-    fc.save_specific_class_daily(df, "student_class")
+    print(time_in)
+    
+    #fc.get_names(df)
+    #fc.get_student(df, "749309")
+
+    #ds.save_specific_class_daily(df, "Surgery Preparation 2B2")
 
     # Note: To use send_email_with_pdf_attachment, you need to add your sender email, sender password, 
     # receiver email, and specified class as parameters. FilePath is already included as a parameter.
-    fc.send_email_with_pdf_attachment("C:\\Users\\pc\\Downloads\\daily_class_log.pdf")
+    #fc.send_email_with_pdf_attachment("tests\daily_class_log.pdf")
 
 if __name__ == "__main__":
     main()
