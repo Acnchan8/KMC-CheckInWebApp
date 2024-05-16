@@ -38,14 +38,18 @@ class StudentCheck:
 
 #Create Function Database(Parameters=Student)
 def create_student_database(df, barcode, id, email, student_class, instructor, name, role, department, institution, service, caseName):
-    
+    barcode = str(barcode)
+    print("Barcode: ", barcode)
     #Check if barcode is just numbers
     if not str(barcode).isdigit():
         print("Invalid barcode. Barcode should be numeric.")
         return df
     
+    existing_barcodes = df['barcode'].astype(str).values
+    print("Existing barcodes in DataFrame:", existing_barcodes)
+
     # Check if barcode exists in the frame
-    if any(df['barcode'] == barcode):
+    if barcode in existing_barcodes:
         print("Student barcode found.")
         return df
     
