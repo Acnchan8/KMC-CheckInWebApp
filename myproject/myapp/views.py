@@ -39,8 +39,6 @@ def scanunsuccessful_view(request):
 def createstudent_view(request):
     return render(request, 'myapp/createstudent.html')
 
-
-
 def createstudent_view(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -69,8 +67,11 @@ def createstudent_view(request):
         form = StudentForm()
     return render(request, 'myapp/createstudent.html', {'form': form})
 
-def student_list_view(request):
-    updated_excel_path = os.path.join(settings.BASE_DIR, 'myapp', 'student_data_updated.xlsx')  # Use absolute path
+def database_view(request):
+    updated_excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Master_Checkin.xlsx')  # Use absolute path
     df = pd.read_excel(updated_excel_path)  # Load the updated dataframe
-    students = df.to_dict(orient='records')
-    return render(request, 'myapp/studentlist.html', {'students': students})
+    #students = df.to_dict(orient='records')
+    df.to_excel(updated_excel_path, index=False)
+    html_data = df.to_html(index=False)
+    return render(request, 'myapp/database.html', {'data_html': html_data})
+

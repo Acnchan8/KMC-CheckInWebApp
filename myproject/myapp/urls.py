@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from . import views as main_views
+from django.conf.urls.static import static
 
 urlpatterns = [
     # path('', views.index, name='index'),
@@ -13,8 +14,7 @@ urlpatterns = [
     path('scansuccessful/', views.scansuccessful_view, name='scansuccessful'),
     path('scanunsuccessful/', views.scanunsuccessful_view, name='scanunsuccessful'),
     path('createstudent/', views.createstudent_view, name='createstudent'),
-    path('database/', main_views.button, name="button")
-] 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 
