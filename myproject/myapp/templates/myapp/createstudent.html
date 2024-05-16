@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Create Student</h1>
-    <form method="post">
+    <form method="post" action="{% url 'createstudent' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Create Student">

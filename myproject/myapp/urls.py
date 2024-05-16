@@ -11,13 +11,12 @@ urlpatterns = [
     path('loginUpdated/', views.loginUpdated_view, name='login'),
     path('database/', views.database_view, name='database'),
     path('database/<str:dataset>/', views.database_view, name='database_dataset'),
-    path('create_student/', views.create_student_view, name='create_student'),
-    path('update_student/', views.update_student_view, name='update_student'),
-    path('delete_student/', views.delete_student_view, name='delete_student'),
     path('scanproceed/', views.scanproceed_view, name='scanproceed'),
     path('scansuccessful/', views.scansuccessful_view, name='scansuccessful'),
     path('scanunsuccessful/', views.scanunsuccessful_view, name='scanunsuccessful'),
     path('createstudent/', views.createstudent_view, name='createstudent'),
+    path('updatestudent/', views.updatestudent_view, name='update_student'),
+    path('deletestudent/', views.deletestudent_view, name='delete_student'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
