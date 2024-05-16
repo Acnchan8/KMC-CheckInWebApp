@@ -67,11 +67,54 @@ def createstudent_view(request):
         form = StudentForm()
     return render(request, 'myapp/createstudent.html', {'form': form})
 
-def database_view(request):
-    updated_excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Master_Checkin.xlsx')  # Use absolute path
-    df = pd.read_excel(updated_excel_path)  # Load the updated dataframe
-    #students = df.to_dict(orient='records')
-    df.to_excel(updated_excel_path, index=False)
-    html_data = df.to_html(index=False)
-    return render(request, 'myapp/database.html', {'data_html': html_data})
+def database_view(request, dataset='default'):
+    # Map dataset names to Excel files
+    dataset_files = {
+        'default': 'KMC_Student_Database.xlsx',
+        'checkin': 'KMC_Master_Checkin.xlsx',
+        'student': 'KMC_Student_Database.xlsx',
+    }
+    excel_file = dataset_files.get(dataset, 'KMC_Master_Checkin.xlsx')
+    excel_path = os.path.join(settings.MEDIA_ROOT, excel_file)
+    df = pd.read_excel(excel_path)
 
+    query = request.GET.get('search')
+    if query:
+        df = df[df.apply(lambda row: row.astype(str).str.contains(query).any(), axis=1)]
+
+    html_table = df.to_html(index=False, classes='dataframe')
+    return render(request, 'myapp/database.html', {'data_html': html_table, 'dataset': dataset})
+
+def create_student_view(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('database_dataset', dataset='student')  # Redirect after POST
+    else:
+        form = StudentForm()  # An unbound form
+
+    return render(request, 'myapp/createstudent.html', {'form': form})
+
+
+def update_student_view(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('database_dataset', dataset='student')  # Redirect after POST
+    else:
+        form = StudentForm()  # An unbound form
+
+    return render(request, 'myapp/createstudent.html', {'form': form})
+
+def delete_student_view(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('database_dataset', dataset='student')  # Redirect after POST
+    else:
+        form = StudentForm()  # An unbound form
+
+    return render(request, 'myapp/createstudent.html', {'form': form})
