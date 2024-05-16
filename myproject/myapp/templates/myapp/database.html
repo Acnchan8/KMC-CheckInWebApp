@@ -65,27 +65,6 @@
         color: white;
         }
 
-         /* button to navigate into upload excel sheet */
-         
-         button4{
-            position: absolute;
-            text-align: center;
-            top: 135%;
-             left: 70%;
-            transform: translate(-50%, -50%);
-            background-color: lightblue;
-            margin: 4px 2px;
-            border-radius: 8px;
-            font-size: 20px;
-            height: 35px;
-            width: 175px;
-         }
-
-         button4:hover{
-        background-color: blue;
-        color: white;}
-
-
             /* start table structure */
     table {
             border-collapse: collapse;
@@ -148,7 +127,6 @@
     <button1 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View All Data</button1>
     <button2 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Daily Data</button2>
     <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
-    <button4 type="button" onclick="location.href='http://127.0.0.1:8000/upload_excel/'">Upload excel sheet</button4>
     <table id="dataTable" border="1">
 
 
@@ -162,7 +140,7 @@
     let headerRow;
      
 
-    fetch('../tests/KMC_Test_Students.xlsx')
+    fetch('/media/KMC_Master_Checkin.xlsx')
         .then(response => response.arrayBuffer())
         .then(data => {
             const workbook = XLSX.read(data, {type: 'array'});
