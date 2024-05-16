@@ -11,7 +11,7 @@
              position: absolute;
              text-align: center;
             top: 135%;
-             left: 35%;
+             left: 25%;
             transform: translate(-50%, -50%);
             background-color: lightblue;
             margin: 4px 2px;
@@ -32,7 +32,7 @@
              position: absolute;
              text-align: center;
             top: 135%;
-             left: 50%;
+             left: 40%;
             transform: translate(-50%, -50%);
             background-color: lightblue;
             margin: 4px 2px;
@@ -50,7 +50,7 @@
             position: absolute;
             text-align: center;
             top: 135%;
-             left: 65%;
+             left: 55%;
             transform: translate(-50%, -50%);
             background-color: lightblue;
             margin: 4px 2px;
@@ -65,8 +65,29 @@
         color: white;
         }
 
+         /* button to navigate into upload excel sheet */
+         
+         button4{
+            position: absolute;
+            text-align: center;
+            top: 135%;
+             left: 70%;
+            transform: translate(-50%, -50%);
+            background-color: lightblue;
+            margin: 4px 2px;
+            border-radius: 8px;
+            font-size: 20px;
+            height: 35px;
+            width: 175px;
+         }
+
+         button4:hover{
+        background-color: blue;
+        color: white;}
+
+
             /* start table structure */
-        table {
+    table {
             border-collapse: collapse;
             width: 100%;
         }
@@ -127,7 +148,8 @@
     <button1 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View All Data</button1>
     <button2 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Daily Data</button2>
     <button3 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">View Student Data</button3>
-   <table id="dataTable" border="1">
+    <button4 type="button" onclick="location.href='http://localhost:63342/kern%20medical%20project/buttoncode.html?_ijt=trmolucu2aq9qr5jsa9guu441q&_ij_reload=RELOAD_ON_SAVE'">Upload excel sheet</button4>
+    <table id="dataTable" border="1">
 
 
     <!-- calls json and jquery data in order to write functions -->
@@ -138,6 +160,7 @@
        //fetch or take excel sheet and automatically print through json
         let originalData;
     let headerRow;
+     
 
     fetch('../tests/KMC_Test_Students.xlsx')
         .then(response => response.arrayBuffer())
@@ -153,8 +176,12 @@
             //display data
             displayData(originalData);
         })
-           //debugs errors
+            //debugs errors
            .catch(error => console.error('Error:', error));
+
+    
+
+   
 
 //align data into a table structure
        function displayData(data) {

@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from email.message import EmailMessage
 from email.mime.application import MIMEApplication
 import smtplib
-#from studenttypes import Student, Student_check
 
 #create Student Class
 class Student:
@@ -37,8 +36,6 @@ class Student_check:
         self.institution = institution
         self.service = service
         self.caseName = caseName
-
-
 
 #Create Function (Parameters=Student)
 def create_student(df, barcode, id, email, student_class, instructor, name, role, department, institution, service, caseName):
