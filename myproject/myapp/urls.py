@@ -13,7 +13,10 @@ urlpatterns = [
     path('scansuccessful/', views.scansuccessful_view, name='scansuccessful'),
     path('scanunsuccessful/', views.scanunsuccessful_view, name='scanunsuccessful'),
     path('createstudent/', views.createstudent_view, name='createstudent'),
-    path('database/', main_views.button, name="button")
+    path('database/', main_views.button, name="button"),
+    path('students/', views.student_list_view, name='student_list'),
+    path('students/<str:filename>/', views.student_list_view, name='student_list'),
+    path('upload_excel/', views.upload_excel_view, name='upload_excel'),
 ] 
 
 

@@ -5,6 +5,7 @@ from django.conf import settings
 from .crud_functions import create_student
 from .forms import StudentForm
 import pandas as pd
+from django.core.files.storage import FileSystemStorage
 import os
 
 
@@ -69,8 +70,51 @@ def createstudent_view(request):
         form = StudentForm()
     return render(request, 'myapp/createstudent.html', {'form': form})
 
-def student_list_view(request):
-    updated_excel_path = os.path.join(settings.BASE_DIR, 'myapp', 'student_data_updated.xlsx')  # Use absolute path
-    df = pd.read_excel(updated_excel_path)  # Load the updated dataframe
-    students = df.to_dict(orient='records')
+# def student_list_view(request):
+#     updated_excel_path = os.path.join(settings.BASE_DIR, 'myapp', 'student_data_updated.xlsx')  # Use absolute path
+#     df = pd.read_excel(updated_excel_path)  # Load the updated dataframe
+#     students = df.to_dict(orient='records')
+#     return render(request, 'myapp/studentlist.html', {'students': students})
+
+def student_list_view(request, filename=None):
+    if filename:
+        fs = FileSystemStorage()
+        file_path = fs.path(filename)
+
+        try:
+            # Load the dataframe from the uploaded Excel file
+            df = pd.read_excel(file_path)
+            students = df.to_dict(orient='records')
+        except Exception as e:
+            print(f"Error reading file: {e}")
+            students = []
+    else:
+        students = []
+
     return render(request, 'myapp/studentlist.html', {'students': students})
+
+def upload_excel_view(request):
+    if request.method == 'POST' and request.FILES.get('excel_file'):
+        excel_file = request.FILES['excel_file']
+        fs = FileSystemStorage()
+        filename = fs.save(excel_file.name, excel_file)
+        file_path = fs.path(filename)
+
+        try:
+            # Process the uploaded Excel file
+            df = pd.read_excel(file_path)
+            students = df.to_dict(orient='records')
+
+            # Optional: Save the updated Excel file back to storage
+            updated_excel_path = os.path.join(fs.location, 'updated_' + filename)
+            df.to_excel(updated_excel_path, index=False)
+
+            # Redirect to the student list view with the filename as a parameter
+            return redirect('student_list', filename=filename)
+        except Exception as e:
+            print(f"Error processing file: {e}")
+            return render(request, 'myapp/upload_excel.html', {
+                'error': 'There was an error processing the file. Please ensure it is a valid Excel file.'
+            })
+
+    return render(request, 'myapp/upload_excel.html')
