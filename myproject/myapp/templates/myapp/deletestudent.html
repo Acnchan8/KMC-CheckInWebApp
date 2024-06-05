@@ -59,9 +59,12 @@
         <h1>Delete Student</h1>
         <form method="post" action="{% url 'deletestudent' %}">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ delete_form.as_p }}
             <input type="submit" value="Delete Student">
         </form>
+        {% if error %}
+        <div style="color: red;">{{ error }}</div>
+        {% endif %}
     </div>
 </body>
 </html>

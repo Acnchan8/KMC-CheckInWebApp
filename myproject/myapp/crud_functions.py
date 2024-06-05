@@ -99,13 +99,19 @@ def update_student(df, barcode, **kwargs):#unknown variables
     return df
 
 #Delete Function
-def delete_student(df, barcode):
-    # Check if barcode exists in the frame
-    if not any(df['barcode'] == barcode):
+def delete_student(df, id):
+    try:
+        id = int(id)  # Convert to integer if it's a numeric string
+    except ValueError:
+        print("Invalid id format. id should be numeric.")
+        return None
+
+    # Check if id exists in the frame
+    if not any(df['id'] == id):
         print("Student not found.")
         return df
-    #Remove student based on certain value like barcode name etc.
-    index = df.index[df['barcode'] == barcode][0]
+    #Remove student based on certain value like id name etc.
+    index = df.index[df['id'] == id][0]
     df = df.drop(index)
 
     # save changes back to the Excel file

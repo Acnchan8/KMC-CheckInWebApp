@@ -28,3 +28,6 @@ class UpdateStudentForm(forms.Form):
     institution = forms.CharField(label='Institution', max_length=255, required=False)
     service = forms.CharField(label='Service', max_length=255, required=False)
     caseName = forms.CharField(label='Case Name', max_length=255, required=False)
+
+class DeleteForm(forms.Form):
+    id = forms.CharField(label='ID', max_length=255, required=False)

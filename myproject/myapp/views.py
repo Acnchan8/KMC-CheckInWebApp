@@ -2,8 +2,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
-from .crud_functions import create_student_database, update_student, get_student
-from .forms import CreateStudentForm, SearchForm, UpdateStudentForm
+from .crud_functions import create_student_database, update_student, get_student, delete_student
+from .forms import CreateStudentForm, SearchForm, UpdateStudentForm, DeleteForm
 import pandas as pd
 import os
 
@@ -111,28 +111,18 @@ def updatestudent_view(request):
 
 def deletestudent_view(request):
     if request.method == 'POST':
-        form = UpdateStudentForm(request.POST)
-        if form.is_valid():
+        delete_form = DeleteForm(request.POST)
+        if delete_form.is_valid():
             excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             df = pd.read_excel(excel_path)  # Load your dataframe
-            barcode = form.cleaned_data['barcode']
-            id = form.cleaned_data['id']
-            email = form.cleaned_data['email']
-            student_class = form.cleaned_data['student_class']
-            instructor = form.cleaned_data['instructor']
-            name = form.cleaned_data['name']
-            role = form.cleaned_data['role']
-            department = form.cleaned_data['department']
-            institution = form.cleaned_data['institution']
-            service = form.cleaned_data['service']
-            caseName = form.cleaned_data['caseName']
+            id = delete_form.cleaned_data['id']
             
-            updated_df = create_student_database(df, barcode, id, email, student_class, instructor, name, role, department, institution, service, caseName)
+            updated_df = delete_student(df, id)
             updated_excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             updated_df.to_excel(updated_excel_path, index=False)  # Save the updated dataframe
             
             return redirect('database')  # Redirect to the student list view
 
     else:
-        form = StudentForm()
-    return render(request, 'myapp/deletestudent.html', {'form': form})
+        form = DeleteForm()
+    return render(request, 'myapp/deletestudent.html', {'delete_form': form})
