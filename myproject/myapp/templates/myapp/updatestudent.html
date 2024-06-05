@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Student</title>
+    <title>Update Student</title>
     <style>
         body {
             background-color: #f4f4f9;
@@ -56,12 +56,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Create Student</h1>
-        <form method="post" action="{% url 'createstudent' %}">
+        <h1>Search for Student to Update</h1>
+        <form method="post" action="{% url 'updatestudent' %}">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Create Student">
+            {{ search_form.as_p }}
+            <input type="submit" name="search" value="Search Student">
         </form>
+
+        {% if update_form %}
+        <h1>Update Student</h1>
+        <form method="post" action="{% url 'updatestudent' %}">
+            {% csrf_token %}
+            {{ update_form.as_p }}
+            <input type="submit" name="update" value="Update Student">
+        </form>
+        {% endif %}
+
+        {% if error %}
+        <div style="color: red;">{{ error }}</div>
+        {% endif %}
     </div>
 </body>
 </html>

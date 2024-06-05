@@ -2,8 +2,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
-from .crud_functions import create_student_database, Student
-from .forms import StudentForm
+from .crud_functions import create_student_database, update_student, get_student
+from .forms import CreateStudentForm, SearchForm, UpdateStudentForm
 import pandas as pd
 import os
 
@@ -34,7 +34,6 @@ def scanunsuccessful_view(request):
     return render(request, 'myapp/scanunsuccessful.html')
 
 def database_view(request, dataset='default'):
-    # Map dataset names to Excel files
     dataset_files = {
         'default': 'KMC_Student_Database.xlsx',
         'checkin': 'KMC_Master_Checkin.xlsx',
@@ -53,7 +52,7 @@ def database_view(request, dataset='default'):
 
 def createstudent_view(request):
     if request.method == 'POST':
-        form = StudentForm(request.POST)
+        form = CreateStudentForm(request.POST)
         if form.is_valid():
             excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             df = pd.read_excel(excel_path)  # Load your dataframe
@@ -76,40 +75,43 @@ def createstudent_view(request):
             return redirect('database')  # Redirect to the student list view
 
     else:
-        form = StudentForm()
+        form = CreateStudentForm()
     return render(request, 'myapp/createstudent.html', {'form': form})
 
 def updatestudent_view(request):
+    message = ''
     if request.method == 'POST':
-        form = StudentForm(request.POST)
-        if form.is_valid():
-            excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
-            df = pd.read_excel(excel_path)  # Load your dataframe
-            barcode = form.cleaned_data['barcode']
-            id = form.cleaned_data['id']
-            email = form.cleaned_data['email']
-            student_class = form.cleaned_data['student_class']
-            instructor = form.cleaned_data['instructor']
-            name = form.cleaned_data['name']
-            role = form.cleaned_data['role']
-            department = form.cleaned_data['department']
-            institution = form.cleaned_data['institution']
-            service = form.cleaned_data['service']
-            caseName = form.cleaned_data['caseName']
-            
-            updated_df = create_student_database(df, barcode, id, email, student_class, instructor, name, role, department, institution, service, caseName)
+        search_form = SearchForm(request.POST)
+        update_form = UpdateStudentForm(request.POST)
+
+        excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
+        df = pd.read_excel(excel_path)  # Load your dataframe
+
+        if 'search' in request.POST and search_form.is_valid():
+            student_data = get_student(df, search_form.cleaned_data['id'])
+            if student_data:
+                update_form = UpdateStudentForm(initial=student_data)
+            else:
+                message = 'Student not found.'
+                update_form = UpdateStudentForm()
+
+        elif 'update' in request.POST and update_form.is_valid():
+            kwargs = update_form.cleaned_data
+            barcode = kwargs.pop('barcode')  # Remove barcode and use it as the first argument
+
+            updated_df = update_student(df, barcode, **kwargs)
             updated_excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             updated_df.to_excel(updated_excel_path, index=False)  # Save the updated dataframe
-            
+                
             return redirect('database')  # Redirect to the student list view
-
     else:
-        form = StudentForm()
-    return render(request, 'myapp/createstudent.html', {'form': form})
+        search_form = SearchForm()
+        update_form = UpdateStudentForm()
+    return render(request, 'updatestudent.html', {'search_form': search_form, 'update_form': update_form, 'message': message})
 
 def deletestudent_view(request):
     if request.method == 'POST':
-        form = StudentForm(request.POST)
+        form = UpdateStudentForm(request.POST)
         if form.is_valid():
             excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             df = pd.read_excel(excel_path)  # Load your dataframe
@@ -133,4 +135,4 @@ def deletestudent_view(request):
 
     else:
         form = StudentForm()
-    return render(request, 'myapp/createstudent.html', {'form': form})
+    return render(request, 'myapp/deletestudent.html', {'form': form})

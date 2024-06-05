@@ -23,24 +23,27 @@ def main():
     #df = fc.delete_student(df, 156234)
 
     #Processes a student check in
-    check_in_df = fc.process_student_check_in(df, 633647)
-    check_in_df = fc.process_student_check_in(df, 421305)
-    check_in_df = fc.process_student_check_in(df, 734628)
-    check_in_df = fc.process_student_check_in(df, 825739)
-    check_in_df = fc.process_student_check_in(df, 168162)
+    #check_in_df = fc.process_student_check_in(df, 633647)
+    #check_in_df = fc.process_student_check_in(df, 421305)
+    #check_in_df = fc.process_student_check_in(df, 734628)
+    #check_in_df = fc.process_student_check_in(df, 825739)
+    #check_in_df = fc.process_student_check_in(df, 168162)
 
     time_in = time.monotonic()
 
     print(time_in)
+
+    #for barcode in df['barcode']:
+        #fc.process_student_check_in(df, barcode)
     
     #fc.get_names(df)
     #fc.get_student(df, "749309")
-
-    #ds.save_specific_class_daily(df, "Surgery Preparation 2B2")
+    check_in_df = pd.read_excel("tests\KMC_Master_Checkin.xlsx")
+    ds.save_specific_class_daily(check_in_df, "Anatomy 101")
 
     # Note: To use send_email_with_pdf_attachment, you need to add your sender email, sender password, 
     # receiver email, and specified class as parameters. FilePath is already included as a parameter.
-    #fc.send_email_with_pdf_attachment("tests\daily_class_log.pdf")
+    ds.send_email_with_pdf_attachment("alvexin2@gmail.com", "qivf tuju jlvx ibsm ", "alvexin@gmail.com", "Anatomy 101", "tests\daily_class_log.pdf")
 
 if __name__ == "__main__":
     main()

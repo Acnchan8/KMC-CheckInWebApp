@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Student</title>
+    <title>Delete Student</title>
     <style>
         body {
             background-color: #f4f4f9;
@@ -56,11 +56,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Create Student</h1>
-        <form method="post" action="{% url 'createstudent' %}">
+        <h1>Delete Student</h1>
+        <form method="post" action="{% url 'deletestudent' %}">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Create Student">
+            <input type="submit" value="Delete Student">
         </form>
     </div>
 </body>

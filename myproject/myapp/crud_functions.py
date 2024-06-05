@@ -70,6 +70,12 @@ def create_student_database(df, barcode, id, email, student_class, instructor, n
 #Update Function Database
 #**kwargs allows you to pass any number of arguments to a function
 def update_student(df, barcode, **kwargs):#unknown variables
+    try:
+        barcode = int(barcode)  # Convert to integer if it's a numeric string
+    except ValueError:
+        print("Invalid barcode format. barcode should be numeric.")
+        return None
+
     #Validate Data before updating
     # Check if barcode exists in the frame
     if not any(df['barcode'] == barcode):
@@ -158,9 +164,18 @@ def get_names(df):
 #find student by id in the dataframe, print student info
 def get_student(df, student_id):
     print("Searching for student...")
-    student =  df.loc[df['id'] == student_id]
+    try:
+        student_id = int(student_id)  # Convert to integer if it's a numeric string
+    except ValueError:
+        print("Invalid ID format. ID should be numeric.")
+        return None
+    print(student_id)
+    print(df['id'])
+    student = df.loc[df['id'] == student_id]
     if student.empty:
         print("No matches found")
+        return None
     else:
-        print(student)
-    print("Search complete")
+        # Convert the first (and should be only) row of DataFrame to a dictionary
+        student_data = student.iloc[0].to_dict()
+        return student_data

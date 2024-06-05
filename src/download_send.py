@@ -39,7 +39,7 @@ def save_specific_class_daily(df, specified_class):
     # Determine the number of rows needed and calculate an appropriate figure height
     num_rows = len(filtered_df)
     # Custom larger size: for example, 17 inches wide by 22 inches tall
-    fig_width = 17
+    fig_width = 30
     fig_height = max(22, num_rows * 1 + 1)  # Increase height dynamically based on number of rows
 
     # Create the figure with determined height
@@ -119,7 +119,7 @@ def send_email_with_pdf_attachment(send_from, send_from_password, send_to, speci
         server.login(smtp_user, smtp_password)
         server.send_message(msg)
 
-    print(f"Email sent to {send_to} with attachment test3-30-24")
+    print(f"Email sent to {send_to} with attachment test5-16-24")
 
 def send_email_with_excel_attachment(send_from, send_from_password, send_to, specified_class, excel_file_path):
     #Gmail -> smtp.gmail.com

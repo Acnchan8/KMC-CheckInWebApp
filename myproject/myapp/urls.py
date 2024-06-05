@@ -15,10 +15,6 @@ urlpatterns = [
     path('scansuccessful/', views.scansuccessful_view, name='scansuccessful'),
     path('scanunsuccessful/', views.scanunsuccessful_view, name='scanunsuccessful'),
     path('createstudent/', views.createstudent_view, name='createstudent'),
-    path('updatestudent/', views.updatestudent_view, name='update_student'),
-    path('deletestudent/', views.deletestudent_view, name='delete_student'),
+    path('updatestudent/', views.updatestudent_view, name='updatestudent'),
+    path('deletestudent/', views.deletestudent_view, name='deletestudent'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-
-    
