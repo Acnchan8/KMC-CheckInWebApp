@@ -17,4 +17,6 @@ urlpatterns = [
     path('createstudent/', views.createstudent_view, name='createstudent'),
     path('updatestudent/', views.updatestudent_view, name='updatestudent'),
     path('deletestudent/', views.deletestudent_view, name='deletestudent'),
+    path('downloaddata/', views.downloaddata_view, name='downloaddata'),
+    path('emaildata/', views.emaildata_view, name='emaildata'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

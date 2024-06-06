@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Data</title>
+    <style>
+        body {
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], select {
+            display: block; 
+            width: calc(100% - 16px); 
+            padding: 8px;
+            margin-bottom: 5px; 
+            border: 1px solid #ADD8E6;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: lightblue;
+            color: #333;
+            font-size: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Data</h1>
+        <form method="post" action="{% url 'emaildata' %}">
+            {% csrf_token %}
+            {{ email_form.as_p }}
+            <input type="submit" value="Send Email">
+        </form>
+    </div>
+</body>
+</html>

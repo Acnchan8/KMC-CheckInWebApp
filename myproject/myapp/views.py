@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.conf import settings
 from .crud_functions import create_student_database, update_student, get_student, delete_student
-from .forms import CreateStudentForm, SearchForm, UpdateStudentForm, DeleteForm
+from .download_send import save_specific_class_daily, send_email_with_pdf_attachment
+from .forms import CreateStudentForm, SearchForm, UpdateStudentForm, DeleteForm, DownloadForm, EmailForm
 import pandas as pd
 import os
 
@@ -41,7 +42,7 @@ def database_view(request, dataset='default'):
     }
     excel_file = dataset_files.get(dataset, 'KMC_Master_Checkin.xlsx')
     excel_path = os.path.join(settings.MEDIA_ROOT, excel_file)
-    df = pd.read_excel(excel_path)
+    df = pd.read_excel(excel_path, dtype={'barcode': str, 'id': str})
 
     query = request.GET.get('search')
     if query:
@@ -56,17 +57,17 @@ def createstudent_view(request):
         if form.is_valid():
             excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             df = pd.read_excel(excel_path)  # Load your dataframe
-            barcode = form.cleaned_data['barcode']
-            id = form.cleaned_data['id']
-            email = form.cleaned_data['email']
-            student_class = form.cleaned_data['student_class']
-            instructor = form.cleaned_data['instructor']
-            name = form.cleaned_data['name']
-            role = form.cleaned_data['role']
-            department = form.cleaned_data['department']
-            institution = form.cleaned_data['institution']
-            service = form.cleaned_data['service']
-            caseName = form.cleaned_data['caseName']
+            barcode = form.cleaned_data.get('barcode', 'N/A')
+            id = form.cleaned_data.get('id', 'N/A')
+            email = form.cleaned_data['email']  # Email is required, safe to access directly
+            student_class = form.cleaned_data.get('student_class', 'N/A')
+            instructor = form.cleaned_data.get('instructor', 'N/A')
+            name = form.cleaned_data['name']  # Name is required, safe to access directly
+            role = form.cleaned_data.get('role', 'N/A')
+            department = form.cleaned_data.get('department', 'N/A')
+            institution = form.cleaned_data.get('institution', 'N/A')
+            service = form.cleaned_data.get('service', 'N/A')
+            caseName = form.cleaned_data.get('caseName', 'N/A')
             
             updated_df = create_student_database(df, barcode, id, email, student_class, instructor, name, role, department, institution, service, caseName)
             updated_excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
@@ -113,9 +114,9 @@ def deletestudent_view(request):
     if request.method == 'POST':
         delete_form = DeleteForm(request.POST)
         if delete_form.is_valid():
+            id = delete_form.cleaned_data['id']
             excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
             df = pd.read_excel(excel_path)  # Load your dataframe
-            id = delete_form.cleaned_data['id']
             
             updated_df = delete_student(df, id)
             updated_excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Student_Database.xlsx')  # Use absolute path
@@ -124,5 +125,39 @@ def deletestudent_view(request):
             return redirect('database')  # Redirect to the student list view
 
     else:
-        form = DeleteForm()
-    return render(request, 'myapp/deletestudent.html', {'delete_form': form})
+        delete_form = DeleteForm()
+    return render(request, 'myapp/deletestudent.html', {'delete_form': delete_form})
+
+def downloaddata_view(request):
+    if request.method == 'POST':
+        download_form = DownloadForm(request.POST)
+        if download_form.is_valid():
+            specific_class = download_form.cleaned_data['specific_class']
+            excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Master_Checkin.xlsx')  # Use absolute path
+            df = pd.read_excel(excel_path)  # Load your dataframe
+            
+            save_specific_class_daily(df, specific_class)
+            
+            return redirect('database')  # Redirect to the student list view
+
+    else:
+        download_form = DownloadForm()
+    return render(request, 'myapp/downloaddata.html', {'download_form': download_form})
+
+def emaildata_view(request):
+    if request.method == 'POST':
+        email_form = EmailForm(request.POST)
+        if email_form.is_valid():
+            send_to = email_form.cleaned_data['send_to']
+            specific_class = email_form.cleaned_data['specific_class']
+            excel_path = os.path.join(settings.BASE_DIR, 'media', 'KMC_Master_Checkin.xlsx')  # Use absolute path
+            df = pd.read_excel(excel_path)  # Load your dataframe
+            
+            file_path = os.path.join(settings.MEDIA_ROOT, 'daily_log.pdf')
+            send_email_with_pdf_attachment("alvexin2@gmail.com", "qivf tuju jlvx ibsm ", send_to, specific_class, file_path)
+            
+            return redirect('database')  # Redirect to the student list view
+
+    else:
+        email_form = EmailForm()
+    return render(request, 'myapp/emaildata.html', {'email_form': email_form})

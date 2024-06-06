@@ -41,7 +41,7 @@ def create_student_database(df, barcode, id, email, student_class, instructor, n
     barcode = str(barcode)
     print("Barcode: ", barcode)
     #Check if barcode is just numbers
-    if not str(barcode).isdigit():
+    if not str(barcode).isdigit() and not len(str(barcode)) == 0:
         print("Invalid barcode. Barcode should be numeric.")
         return df
     
@@ -122,7 +122,7 @@ def delete_student(df, id):
 
 def process_student_check_in(df, barcode):
     #file path of check in sheet
-    file_path = "media\KMC_Master_Checkin.xlsx"
+    file_path = "myproject\media\KMC_Master_Checkin.xlsx"
     student_check_in_df = pd.read_excel(file_path)
     # Check if the barcode is valid and exists in the DataFrame
     if barcode not in df['barcode'].values:

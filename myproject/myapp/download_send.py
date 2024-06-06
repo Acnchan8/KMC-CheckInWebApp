@@ -1,44 +1,74 @@
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Use the 'Agg' backend, which is designed for generating files.
 import matplotlib.pyplot as plt
 from email.message import EmailMessage
 from email.mime.application import MIMEApplication
 import smtplib
-# from studenttypes import Student, Student_check
+import textwrap
+from django.conf import settings
+import os
 
+def wrap_text(text, width):
+    """
+    Wraps text using textwrap to better handle natural breaking points.    
+    """
+    wrapper = textwrap.TextWrapper(width=width, break_long_words=False, replace_whitespace=False)
+    return '\n'.join(wrapper.wrap(text))
 
 #Saves excel file as a CSV for easy importing to google sheets
 def save_daily_CSV(df):
     # Exclude the first row
     df_to_save = df.iloc[1:].reset_index(drop=True)
     #Sets the file path 
-    file_path = "C:\\Users\\pc\\Downloads\\daily_log.csv"
+    file_path = os.path.join(settings.MEDIA_ROOT, 'daily_log.csv')
     #Creates a csv file with the excel file data
     df_to_save.to_csv(file_path, index=False)
 
 #Saves a specific class's attendance as a pdf
 def save_specific_class_daily(df, specified_class):
     #Sets the file path 
-    file_path = "C:\\Users\\pc\\Downloads\\daily_class_log.pdf"
-    #Creates a dataframe with only students from the specified class
-    filtered_df = df[df["student_class"] == specified_class]
+    file_path = os.path.join(settings.MEDIA_ROOT, 'daily_log.pdf')
+    # Filter the dataframe
+    filtered_df = df[df["student_class"] == specified_class].copy()
     
-    # Create a figure and a single subplot
-    fig, ax = plt.subplots(figsize=(11, len(filtered_df)))
-    #Hide axes
-    ax.axis("off")
+    if filtered_df.empty:
+        print("No data found for the specified class.")
+        return
 
-    #Create the table with the filtered dataframe
-    chart = ax.table(cellText = filtered_df.to_numpy(), colLabels = filtered_df.columns.tolist(), loc='center', cellLoc='center', rowLoc='center')
+    # Apply text wrapping to all string columns
+    wrap_width = 15  # Maximum number of characters in one line
+    for col in filtered_df.select_dtypes(include=[object]).columns:
+        filtered_df[col] = filtered_df[col].apply(lambda x: wrap_text(str(x), wrap_width))
 
-    # Adjust the font size of the table here
-    chart.set_fontsize(10)
-    chart.auto_set_column_width(col=list(range(len(filtered_df.columns))))
+    # Determine the number of rows needed and calculate an appropriate figure height
+    num_rows = len(filtered_df)
+    # Custom larger size: for example, 17 inches wide by 22 inches tall
+    fig_width = 30
+    fig_height = max(22, num_rows * 1 + 1)  # Increase height dynamically based on number of rows
+
+    # Create the figure with determined height
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
+    ax.axis('off')
+
+    # Table setup
+    table = ax.table(cellText=filtered_df.values, colLabels=filtered_df.columns, loc='upper center', cellLoc='center')
+    
+    # Font size and scaling
+    table.auto_set_font_size(False)
+    table.set_fontsize(8)
+    table.scale(1, 2)  # Increase the row height scaling to accommodate wrapped text
+
+    # Adjust layout
+    plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05)
 
     # Save the figure as a PDF
     plt.savefig(file_path)
-
-    # Clear the figure to free memory, especially important if calling this function multiple times
+    
+    # Close the figure to free memory
     plt.close(fig)
+
+    print("Download Complete")
 
 #Send an email with a PDF attachment (Only works if you have 2 step authentication with google)
 def send_email_with_pdf_attachment(send_from, send_from_password, send_to, specified_class, pdf_file_path):
@@ -96,7 +126,7 @@ def send_email_with_pdf_attachment(send_from, send_from_password, send_to, speci
         server.login(smtp_user, smtp_password)
         server.send_message(msg)
 
-    print(f"Email sent to {send_to} with attachment test3-30-24")
+    print(f"Email sent to {send_to} with attachment test5-16-24")
 
 def send_email_with_excel_attachment(send_from, send_from_password, send_to, specified_class, excel_file_path):
     #Gmail -> smtp.gmail.com
